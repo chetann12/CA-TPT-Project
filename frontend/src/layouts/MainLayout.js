@@ -72,11 +72,45 @@ const MainLayout = () => {
   const adminMenuItems = [
     { text: 'Admin Dashboard', icon: <AdminIcon />, path: '/admin' },
     { text: 'Users', icon: <ProfileIcon />, path: '/admin/users' },
-    { text: 'Documents', icon: <DocumentsIcon />, path: '/admin/documents' },
-    { text: 'Billing', icon: <BillingIcon />, path: '/admin/billing' },
+    { text: 'Create Bill', icon: <BillingIcon />, path: '/admin/billing' },
     { text: 'All Bills', icon: <BillingIcon />, path: '/admin/all-bills' },
     { text: 'Statement', icon: <TrendingUpIcon />, path: '/admin/statement' },
   ];
+
+  const getPageTitle = (path) => {
+    const allItems = [...menuItems, ...adminMenuItems];
+    const match = allItems.find(item => item.path === path);
+    return match ? match.text : 'Client Portal';
+  };
+
+  const renderMenuItems = (items) => (
+    items.map((item) => {
+      const isActive = location.pathname === item.path;
+      return (
+        <ListItem
+          button
+          key={item.text}
+          onClick={() => navigate(item.path)}
+          sx={{
+            bgcolor: isActive ? 'primary.main' : 'transparent',
+            color: isActive ? 'white' : 'inherit',
+            fontWeight: isActive ? 600 : 'normal',
+            borderLeft: isActive ? '4px solid #1976d2' : '4px solid transparent',
+            '&:hover': {
+              bgcolor: 'primary.light',
+              color: 'white',
+            },
+            position: 'relative',
+          }}
+        >
+          <ListItemIcon sx={{ color: isActive ? 'white' : 'inherit' }}>
+            {item.icon}
+          </ListItemIcon>
+          <ListItemText primary={item.text} />
+        </ListItem>
+      );
+    })
+  );
 
   const drawer = (
     <Box>
@@ -86,35 +120,11 @@ const MainLayout = () => {
         </Typography>
       </Toolbar>
       <Divider />
-      <List>
-        {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => navigate(item.path)}
-            sx={location.pathname === item.path ? { bgcolor: 'action.selected', fontWeight: 600 } : {}}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
+      <List>{renderMenuItems(menuItems)}</List>
       {isAdmin && (
         <>
           <Divider />
-          <List>
-            {adminMenuItems.map((item) => (
-              <ListItem
-                button
-                key={item.text}
-                onClick={() => navigate(item.path)}
-                sx={location.pathname === item.path ? { bgcolor: 'action.selected', fontWeight: 600 } : {}}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItem>
-            ))}
-          </List>
+          <List>{renderMenuItems(adminMenuItems)}</List>
         </>
       )}
     </Box>
@@ -140,7 +150,7 @@ const MainLayout = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {user?.name || 'Client Portal'}
+            {getPageTitle(location.pathname)}
           </Typography>
           <Button color="inherit" onClick={handleLogout} startIcon={<LogoutIcon />}>
             Logout
@@ -155,9 +165,7 @@ const MainLayout = () => {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
@@ -189,6 +197,7 @@ const MainLayout = () => {
           <Outlet />
         </Container>
       </Box>
+
       <Dialog open={logoutDialogOpen} onClose={cancelLogout}>
         <DialogTitle>Confirm Logout</DialogTitle>
         <DialogContent>
@@ -205,4 +214,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout; 
+export default MainLayout;

@@ -31,7 +31,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
-
 const AllBills = () => {
   const [bills, setBills] = useState([]);
   const [search, setSearch] = useState('');
@@ -450,7 +449,22 @@ const AllBills = () => {
                                 onChange={e => handlePaymentChange(bill._id, e)}
                                 size="small"
                                 fullWidth
-                                inputProps={{ min: 0, inputMode: 'numeric', pattern: '[0-9]*', style: { MozAppearance: 'textfield' } }}
+                                 InputProps={{
+                        inputProps: {
+                          min: 0,
+                          inputMode: 'numeric',
+                          pattern: '[0-9]*'
+                        },
+                        sx: {
+                          '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+                            WebkitAppearance: 'none',
+                            margin: 0
+                          },
+                          '& input[type=number]': {
+                            MozAppearance: 'textfield'
+                          }
+                        }
+                      }}
                               />
                             </Grid>
                             <Grid item xs={12} sm={3}>

@@ -185,6 +185,9 @@ const Register = () => {
         <Typography variant="h6" gutterBottom>
           Personal Information
         </Typography>
+         <Typography variant="h12" gutterBottom>
+          as per PAN Card
+        </Typography>
       </Grid>
       <Grid item xs={12} sm={4}>
         <TextField

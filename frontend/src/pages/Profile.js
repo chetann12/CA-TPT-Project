@@ -25,10 +25,11 @@ const Profile = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch user profile
     axios.get('/api/profile')
       .then(res => {
         setProfile(res.data);
@@ -58,6 +59,7 @@ const Profile = () => {
       await axios.put('/api/profile', form);
       setSuccess(true);
       setProfile(form);
+      setIsEditable(false);
     } catch (err) {
       setError('Failed to update profile');
     } finally {
@@ -80,83 +82,100 @@ const Profile = () => {
     }
   };
 
+  const handleEditConfirm = () => {
+    setEditDialogOpen(false);
+    setIsEditable(true);
+  };
+
   if (!profile) return <Typography sx={{ p: 3 }}>Loading...</Typography>;
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Profile
-      </Typography>
+      <Typography variant="h4" gutterBottom>Profile</Typography>
+
       <Grid container spacing={3}>
         <Grid item xs={12} md={8} lg={7}>
           <Paper sx={{ p: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Personal Information
-            </Typography>
+            <Typography variant="h6" gutterBottom>Personal Information</Typography>
             <form onSubmit={handleSubmit}>
-              {/* Name as per PAN */}
+              <Box sx={{ mb: 2 }}>
+                <Button variant="outlined" onClick={() => setEditDialogOpen(true)} disabled={isEditable}>
+                  Edit Profile
+                </Button>
+              </Box>
+
               <Typography variant="subtitle1" sx={{ mt: 2 }}>Name as per PAN</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="First Name" name="firstName" value={form.firstName || ''} onChange={handleChange} fullWidth margin="normal" />
+                  <TextField label="First Name" name="firstName" value={form.firstName || ''} onChange={handleChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="Middle Name" name="middleName" value={form.middleName || ''} onChange={handleChange} fullWidth margin="normal" />
+                  <TextField label="Middle Name" name="middleName" value={form.middleName || ''} onChange={handleChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="Last Name" name="lastName" value={form.lastName || ''} onChange={handleChange} fullWidth margin="normal" />
+                  <TextField label="Last Name" name="lastName" value={form.lastName || ''} onChange={handleChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
               </Grid>
-              <TextField label="Trade Name (If Any)" name="tradeName" value={form.tradeName || ''} onChange={handleChange} fullWidth margin="normal" />
-              {/* Father's Name */}
+
+              <TextField label="Trade Name (If Any)" name="tradeName" value={form.tradeName || ''} onChange={handleChange} fullWidth margin="normal" disabled={!isEditable} />
+
               <Typography variant="subtitle1" sx={{ mt: 2 }}>Father's Name</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="Father's First Name" name="fatherFirstName" value={form.fatherFirstName || ''} onChange={handleFatherChange} fullWidth margin="normal" />
+                  <TextField label="Father's First Name" name="fatherFirstName" value={form.fatherFirstName || ''} onChange={handleFatherChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="Father's Middle Name" name="fatherMiddleName" value={form.fatherMiddleName || ''} onChange={handleFatherChange} fullWidth margin="normal" />
+                  <TextField label="Father's Middle Name" name="fatherMiddleName" value={form.fatherMiddleName || ''} onChange={handleFatherChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <TextField label="Father's Last Name" name="fatherLastName" value={form.fatherLastName || ''} onChange={handleFatherChange} fullWidth margin="normal" />
+                  <TextField label="Father's Last Name" name="fatherLastName" value={form.fatherLastName || ''} onChange={handleFatherChange} fullWidth margin="normal" disabled={!isEditable} />
                 </Grid>
               </Grid>
-              {/* Address */}
-              <Typography variant="subtitle1" sx={{ mt: 2 }}>Address</Typography>
-              <TextField label="Address" name="address" value={form.address || ''} onChange={handleChange} fullWidth margin="normal" multiline minRows={2} />
-              {/* Date of Birth */}
-              <TextField label="Date of Birth" name="dateOfBirth" type="date" value={form.dateOfBirth ? form.dateOfBirth.slice(0, 10) : ''} onChange={handleChange} fullWidth margin="normal" InputLabelProps={{ shrink: true }} />
-              {/* PAN and Email (disabled) */}
+
+              <TextField label="Address" name="address" value={form.address || ''} onChange={handleChange} fullWidth margin="normal" multiline minRows={2} disabled={!isEditable} />
+              <TextField label="Date of Birth" name="dateOfBirth" type="date" value={form.dateOfBirth ? form.dateOfBirth.slice(0, 10) : ''} onChange={handleChange} fullWidth margin="normal" InputLabelProps={{ shrink: true }} disabled={!isEditable} />
               <TextField label="PAN" name="pan" value={form.pan || ''} fullWidth margin="normal" disabled />
               <TextField label="Email" name="email" value={form.email || ''} fullWidth margin="normal" disabled />
-              {/* GST Number */}
-              <TextField label="GST Number (if applicable)" name="gstNumber" value={form.gstNumber || ''} onChange={handleChange} fullWidth margin="normal" />
-              <Box sx={{ mt: 2 }}>
-                <Button type="submit" variant="contained" color="primary" disabled={loading}>
-                  {loading ? 'Saving...' : 'Update Profile'}
-                </Button>
-                
-              </Box>
+              <TextField label="GST Number (if applicable)" name="gstNumber" value={form.gstNumber || ''} onChange={handleChange} fullWidth margin="normal" disabled={!isEditable} />
+
+              {isEditable && (
+                <Box sx={{ mt: 2 }}>
+                  <Button type="submit" variant="contained" color="primary" disabled={loading}>
+                    {loading ? 'Saving...' : 'Update Profile'}
+                  </Button>
+                </Box>
+              )}
             </form>
           </Paper>
         </Grid>
       </Grid>
+
       <Snackbar open={success} autoHideDuration={3000} onClose={() => setSuccess(false)}>
-        <Alert severity="success" sx={{ width: '100%' }}>
-          Profile updated successfully!
-        </Alert>
+        <Alert severity="success" sx={{ width: '100%' }}>Profile updated successfully!</Alert>
       </Snackbar>
       <Snackbar open={!!error} autoHideDuration={4000} onClose={() => setError('')}>
-        <Alert severity="error" sx={{ width: '100%' }}>
-          {error}
-        </Alert>
+        <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>
       </Snackbar>
+
+      {/* Confirm Edit Dialog */}
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+        <DialogTitle>Enable Edit Mode</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to edit your profile? You will be able to modify all editable fields.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleEditConfirm} autoFocus variant="contained">Yes, Enable</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Confirm Delete Dialog */}
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>Confirm Account Deletion</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete your account? This action cannot be undone.
-          </DialogContentText>
+          <DialogContentText>Are you sure you want to delete your account? This action cannot be undone.</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
@@ -167,4 +186,4 @@ const Profile = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

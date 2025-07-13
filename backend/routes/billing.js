@@ -110,7 +110,6 @@ router.get('/:id/download', auth, async (req, res) => {
 // Admin: Create new bill
 router.post('/', adminAuth, upload.single('billFile'), async (req, res) => {
   try {
-    console.log('Received bill POST:', req.body);
     const billData = {
       ...req.body,
       createdBy: req.user._id

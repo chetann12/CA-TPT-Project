@@ -151,21 +151,17 @@ router.post('/login', authLimiter, [
   }
   try {
     const { pan, password } = req.body;
-    console.log('Login attempt for PAN:', pan);
     
     const user = await User.findOne({ pan: pan.toUpperCase() });
     if (!user) {
-      console.log('User not found for PAN:', pan);
       return res.status(404).json({ message: 'User not found' });
     }
 
     if (!user.isActive) {
-      console.log('Inactive account attempt for PAN:', pan);
       return res.status(403).json({ message: 'Account is deactivated' });
     }
 
     // Verify password
-    console.log('Verifying password for PAN:', pan);
     const isMatch = await user.comparePassword(password);
     // if (!isMatch) {
     //   console.log('Invalid password for PAN:', pan);
@@ -191,7 +187,6 @@ router.post('/login', authLimiter, [
       { expiresIn: '24h' }
     );
 
-    console.log('Successful login for PAN:', pan);
     res.json({
       token,
       user: {

@@ -5,7 +5,7 @@ const User = require('./models/User');
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/client-portal')
-  .then(() => console.log('Connected to MongoDB'))
+  .then(() => {})
   .catch(err => console.error('MongoDB connection error:', err));
 
 const createAdminUser = async () => {
@@ -13,7 +13,6 @@ const createAdminUser = async () => {
     // Check if admin already exists
     const existingAdmin = await User.findOne({ role: 'admin' });
     if (existingAdmin) {
-      console.log('Admin user already exists:', existingAdmin.pan);
       process.exit(0);
     }
 
@@ -36,10 +35,7 @@ const createAdminUser = async () => {
     });
 
     await adminUser.save();
-    console.log('Admin user created successfully!');
-    console.log('PAN: ADMIN1234567');
-    console.log('Password: admin123');
-    console.log('Email: admin@clientportal.com');
+    // Admin user created successfully
     
   } catch (error) {
     console.error('Error creating admin user:', error);

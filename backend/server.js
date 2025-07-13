@@ -67,7 +67,6 @@ app.use(limiter);
 app.get('/api/csrf-token', (req, res, next) => {
   try {
     const csrfToken = generateToken(req);
-    console.log('Generated CSRF Token:', csrfToken);
     res.json({ csrfToken });
   } catch (err) {
     console.error('Error generating CSRF token:', err);
@@ -77,7 +76,7 @@ app.get('/api/csrf-token', (req, res, next) => {
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/client-portal')
-  .then(() => console.log('Connected to MongoDB'))
+  .then(() => {})
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Auth routes WITHOUT CSRF protection (for login, register, etc.)
@@ -102,5 +101,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  // Server started successfully
 });

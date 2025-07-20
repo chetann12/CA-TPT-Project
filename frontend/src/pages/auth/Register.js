@@ -20,6 +20,8 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { register, clearError, clearSuccess } from '../../store/slices/authSlice';
+import FirmHeader from '../../components/FirmHeader';
+import FirmFooter from '../../components/FirmFooter';
 
 const validationSchema = Yup.object().shape({
   userType: Yup.string().required('User type is required'),
@@ -460,166 +462,170 @@ const Register = () => {
   );
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default',
-        p: 2,
-      }}
-    >
-      <Card sx={{ maxWidth: 800, width: '100%' }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            Register
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom align="center" color="text.secondary">
-            Create your account
-          </Typography>
+    <>
+      <FirmHeader />
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
+          p: 2,
+        }}
+      >
+        <Card sx={{ maxWidth: 800, width: '100%' }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h4" component="h1" gutterBottom align="center">
+              Register
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom align="center" color="text.secondary">
+              Create your account
+            </Typography>
 
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
 
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {success}
-            </Alert>
-          )}
+            {success && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {success}
+              </Alert>
+            )}
 
-          <form onSubmit={formik.handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl fullWidth error={formik.touched.userType && Boolean(formik.errors.userType)}>
-                  <InputLabel>User Type</InputLabel>
-                  <Select
-                    id="userType"
-                    name="userType"
-                    value={userType}
-                    onChange={handleUserTypeChange}
-                    label="User Type"
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <FormControl fullWidth error={formik.touched.userType && Boolean(formik.errors.userType)}>
+                    <InputLabel>User Type</InputLabel>
+                    <Select
+                      id="userType"
+                      name="userType"
+                      value={userType}
+                      onChange={handleUserTypeChange}
+                      label="User Type"
+                      disabled={loading}
+                    >
+                      <MenuItem value="individual">Individual / HUF</MenuItem>
+                      <MenuItem value="company">Company / LLP / Partnership Firm</MenuItem>
+                    </Select>
+                    {formik.touched.userType && formik.errors.userType && (
+                      <FormHelperText>{formik.errors.userType}</FormHelperText>
+                    )}
+                  </FormControl>
+                </Grid>
+
+                {/* Common Fields */}
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    label="Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
                     disabled={loading}
-                  >
-                    <MenuItem value="individual">Individual / HUF</MenuItem>
-                    <MenuItem value="company">Company / LLP / Partnership Firm</MenuItem>
-                  </Select>
-                  {formik.touched.userType && formik.errors.userType && (
-                    <FormHelperText>{formik.errors.userType}</FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="mobile"
+                    name="mobile"
+                    label="Mobile Number"
+                    value={formik.values.mobile}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.mobile && Boolean(formik.errors.mobile)}
+                    helperText={formik.touched.mobile && formik.errors.mobile}
+                    disabled={loading}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="pan"
+                    name="pan"
+                    label="PAN"
+                    value={formik.values.pan}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.pan && Boolean(formik.errors.pan)}
+                    helperText={formik.touched.pan && formik.errors.pan}
+                    disabled={loading}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="password"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
+                    disabled={loading}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                    helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    disabled={loading}
+                  />
+                </Grid>
 
-              {/* Common Fields */}
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="email"
-                  name="email"
-                  label="Email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  disabled={loading}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="mobile"
-                  name="mobile"
-                  label="Mobile Number"
-                  value={formik.values.mobile}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.mobile && Boolean(formik.errors.mobile)}
-                  helperText={formik.touched.mobile && formik.errors.mobile}
-                  disabled={loading}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="pan"
-                  name="pan"
-                  label="PAN"
-                  value={formik.values.pan}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.pan && Boolean(formik.errors.pan)}
-                  helperText={formik.touched.pan && formik.errors.pan}
-                  disabled={loading}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="password"
-                  name="password"
-                  label="Password"
-                  type="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.password && Boolean(formik.errors.password)}
-                  helperText={formik.touched.password && formik.errors.password}
-                  disabled={loading}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  value={formik.values.confirmPassword}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-                  helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                  disabled={loading}
-                />
-              </Grid>
+                {/* Conditional Fields */}
+                {userType === 'individual' ? renderIndividualFields() : renderCompanyFields()}
 
-              {/* Conditional Fields */}
-              {userType === 'individual' ? renderIndividualFields() : renderCompanyFields()}
-
-              <Grid item xs={12}>
-                <Button
-                  fullWidth
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  disabled={loading}
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  {loading ? <CircularProgress size={24} /> : 'Register'}
-                </Button>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Typography variant="body2" color="text.secondary" align="center">
-                  Already have an account?{' '}
+                <Grid item xs={12}>
                   <Button
-                    color="primary"
-                    onClick={() => navigate('/login')}
-                    sx={{ textTransform: 'none' }}
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    disabled={loading}
+                    sx={{ mt: 3, mb: 2 }}
                   >
-                    Login
+                    {loading ? <CircularProgress size={24} /> : 'Register'}
                   </Button>
-                </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="body2" color="text.secondary" align="center">
+                    Already have an account?{' '}
+                    <Button
+                      color="primary"
+                      onClick={() => navigate('/login')}
+                      sx={{ textTransform: 'none' }}
+                    >
+                      Login
+                    </Button>
+                  </Typography>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
-        </CardContent>
-      </Card>
-    </Box>
+            </form>
+          </CardContent>
+        </Card>
+      </Box>
+      <FirmFooter />
+    </>
   );
 };
 

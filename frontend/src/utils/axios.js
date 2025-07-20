@@ -41,7 +41,7 @@ instance.interceptors.request.use(
         });
         
         const response = await csrfAxios.get('/api/csrf-token');
-
+        
         if (response?.data?.csrfToken) {
           config.headers['X-CSRF-Token'] = response.data.csrfToken;
         } else {

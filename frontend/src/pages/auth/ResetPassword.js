@@ -19,6 +19,8 @@ import {
   DialogActions,
 } from '@mui/material';
 import { resetPassword, clearError, clearSuccess } from '../../store/slices/authSlice';
+import FirmHeader from '../../components/FirmHeader';
+import FirmFooter from '../../components/FirmFooter';
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -110,92 +112,96 @@ const ResetPassword = () => {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default',
-        p: 2,
-      }}
-    >
-      <Card sx={{ maxWidth: 400, width: '100%' }}>
-        <CardContent sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            Reset Password
-          </Typography>
-          <Typography variant="subtitle1" gutterBottom align="center" color="text.secondary">
-            Enter your new password
-          </Typography>
-
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {success}
-            </Alert>
-          )}
-
-          <form onSubmit={formik.handleSubmit}>
-            <TextField
-              fullWidth
-              id="password"
-              name="password"
-              label="New Password"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              disabled={loading}
-              sx={{ mb: 2 }}
-            />
-
-            <TextField
-              fullWidth
-              id="confirmPassword"
-              name="confirmPassword"
-              label="Confirm New Password"
-              type="password"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-              helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-              disabled={loading}
-              sx={{ mb: 3 }}
-            />
-
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              size="large"
-              disabled={loading}
-              sx={{ mb: 2 }}
-            >
-              {loading ? <CircularProgress size={24} /> : 'Reset Password'}
-            </Button>
-
-            <Typography variant="body2" color="text.secondary" align="center">
-              Remember your password?{' '}
-              <Button
-                color="primary"
-                onClick={() => navigate('/login')}
-                sx={{ textTransform: 'none' }}
-              >
-                Login
-              </Button>
+    <>
+      <FirmHeader />
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
+          p: 2,
+        }}
+      >
+        <Card sx={{ maxWidth: 400, width: '100%' }}>
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="h4" component="h1" gutterBottom align="center">
+              Reset Password
             </Typography>
-          </form>
-        </CardContent>
-      </Card>
+            <Typography variant="subtitle1" gutterBottom align="center" color="text.secondary">
+              Enter your new password
+            </Typography>
+
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+
+            {success && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {success}
+              </Alert>
+            )}
+
+            <form onSubmit={formik.handleSubmit}>
+              <TextField
+                fullWidth
+                id="password"
+                name="password"
+                label="New Password"
+                type="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
+                disabled={loading}
+                sx={{ mb: 2 }}
+              />
+
+              <TextField
+                fullWidth
+                id="confirmPassword"
+                name="confirmPassword"
+                label="Confirm New Password"
+                type="password"
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                disabled={loading}
+                sx={{ mb: 3 }}
+              />
+
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                size="large"
+                disabled={loading}
+                sx={{ mb: 2 }}
+              >
+                {loading ? <CircularProgress size={24} /> : 'Reset Password'}
+              </Button>
+
+              <Typography variant="body2" color="text.secondary" align="center">
+                Remember your password?{' '}
+                <Button
+                  color="primary"
+                  onClick={() => navigate('/login')}
+                  sx={{ textTransform: 'none' }}
+                >
+                  Login
+                </Button>
+              </Typography>
+            </form>
+          </CardContent>
+        </Card>
+      </Box>
+      <FirmFooter />
       <Dialog open={confirmDialogOpen} onClose={handleCancelReset}>
         <DialogTitle>Confirm Password Reset</DialogTitle>
         <DialogContent>
@@ -208,7 +214,7 @@ const ResetPassword = () => {
           <Button onClick={handleConfirmReset} color="primary">Reset Password</Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </>
   );
 };
 

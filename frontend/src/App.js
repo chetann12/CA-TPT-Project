@@ -19,6 +19,8 @@ import Dashboard from './pages/Dashboard';
 import Documents from './pages/Documents';
 import Profile from './pages/Profile';
 import Billing from './pages/Billing';
+import LandingPage from './pages/LandingPage';
+import Info from './pages/Info';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -38,6 +40,13 @@ function App() {
       <CssBaseline />
       <Router>
         <Routes>
+          {/* Landing Page Route (Public) */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Client Portal Route (Public entry, but will redirect to login if not authenticated) */}
+          <Route path="/client-portal" element={<PrivateRoute><MainLayout /></PrivateRoute>} />
+          {/* <Route path="/dashboard" element={<PrivateRoute><MainLayout /></PrivateRoute>} /> */}
+
           {/* Auth Routes */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
@@ -48,7 +57,7 @@ function App() {
 
           {/* Main Routes */}
           <Route element={<PrivateRoute><MainLayout /></PrivateRoute>}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Info />} />
             <Route path="/documents" element={<Documents />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/billing" element={<Billing />} />

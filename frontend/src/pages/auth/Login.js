@@ -14,6 +14,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { login, selectAuthLoading, selectAuthError } from '../../store/slices/authSlice';
+import FirmHeader from '../../components/FirmHeader';
+import FirmFooter from '../../components/FirmFooter';
 
 const validationSchema = Yup.object({
   pan: Yup.string()
@@ -39,86 +41,90 @@ const Login = () => {
     onSubmit: async (values) => {
       const result = await dispatch(login(values));
       if (!result.error) {
-        navigate('/');
+        navigate('/dashboard');
       }
     },
   });
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+    <>
+      <FirmHeader />
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
-            {error}
-          </Alert>
-        )}
+          {error && (
+            <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+              {error}
+            </Alert>
+          )}
 
-        <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="pan"
-            label="PAN Number"
-            name="pan"
-            autoComplete="off"
-            value={formik.values.pan}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.pan && Boolean(formik.errors.pan)}
-            helperText={formik.touched.pan && formik.errors.pan}
-            inputProps={{
-              style: { textTransform: 'uppercase' },
-            }}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={loading}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Sign In'}
-          </Button>
-          <Box sx={{ textAlign: 'center' }}>
-            <Link href="/forgot-password" variant="body2">
-              Forgot password?
-            </Link>
-          </Box>
-          <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Link href="/register" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
+          <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="pan"
+              label="PAN Number"
+              name="pan"
+              autoComplete="off"
+              value={formik.values.pan}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.pan && Boolean(formik.errors.pan)}
+              helperText={formik.touched.pan && formik.errors.pan}
+              inputProps={{
+                style: { textTransform: 'uppercase' },
+              }}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Sign In'}
+            </Button>
+            <Box sx={{ textAlign: 'center' }}>
+              <Link href="/forgot-password" variant="body2">
+                Forgot password?
+              </Link>
+            </Box>
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Link href="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+      <FirmFooter />
+    </>
   );
 };
 
